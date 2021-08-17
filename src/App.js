@@ -4,6 +4,34 @@ import './App.css';
 
 export default function App() {
 
+  const [currAccount, setCurrAccount] = React.useState("");
+
+  const checkIfWalletIsConnected = () => {
+    const ethereum = window;
+    if (!ethereum){
+      console.log("make sure you have metamask")
+      return;
+    } else {
+      console.log(" We have an ethereum object", ethereum)
+    }
+  }
+
+  // basically we are trying to get the account info
+  ethereum.request({ method: 'eth_accounts'})
+          .then(accounts => {
+            if (accounts.length !== 0){
+              const account = accounts[0];
+              console.log("Found an authorized account:", account)
+              setCurrAccount(account);
+            } else {
+              console.log("No authorised account found")
+            }
+          })
+
+  React.useEffect(() => {
+      checkIfWalletIsConnected();
+    }, [])
+    
   const wave = () => {
     
   }
@@ -17,7 +45,7 @@ export default function App() {
         </div>
 
         <div className="bio">
-        I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
+        I am Rohaan Malik. Connect your Ethereum wallet and wave at me!
         </div>
 
         <button className="waveButton" onClick={wave}>
