@@ -1,10 +1,13 @@
 import * as React from "react";
 import { ethers } from "ethers";
 import './App.css';
+import abi from "./utils/WavePortal.json"
 
 export default function App() {
 
   const [currAccount, setCurrAccount] = React.useState("");
+  const contractAddress = "0xAd43b153953d46d9bF4A7A55231c983D968E8EBE";
+  const contractABI = abi.abi;
 
   const checkIfWalletIsConnected = () => {
     const { ethereum } = window;
@@ -45,9 +48,24 @@ export default function App() {
       checkIfWalletIsConnected();
     }, [])
     
-  const wave = () => {
-    
-  }
+  const wave = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner();
+    const wavePortalContract = new ethers.Contract(contractAddress,contractABI, signer);
+
+    let count = await wavePortalContract.getTotalWaves();
+    console.log("Total number of waves are: ", count.toNumber())
+
+    // waiting for the wave transaction
+    const waveTxn = await wavePortalContract.wave()
+    console.log("Mining....", waveTxn.hash)
+    await waveTxn.wait()
+    console.log("Mined the transaction ", waveTxn.hash)
+
+    count = await wavePortalContract.getTotalWaves();
+    console.log("Retrieved the total number of waves: ", count.toNumber())
+
+    }
   
   return (
     <div className="mainContainer">
