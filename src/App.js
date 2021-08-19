@@ -8,6 +8,7 @@ export default function App() {
   const [currAccount, setCurrAccount] = React.useState("");
   const contractAddress = "0xAd43b153953d46d9bF4A7A55231c983D968E8EBE";
   const contractABI = abi.abi;
+  const [mining, setMining] = React.useState(false);
 
   const checkIfWalletIsConnected = () => {
     const { ethereum } = window;
@@ -59,7 +60,9 @@ export default function App() {
     // waiting for the wave transaction
     const waveTxn = await wavePortalContract.wave()
     console.log("Mining....", waveTxn.hash)
+    setMining(mining => !mining)
     await waveTxn.wait()
+    setMining(mining => !mining)
     console.log("Mined the transaction ", waveTxn.hash)
 
     count = await wavePortalContract.getTotalWaves();
@@ -82,7 +85,8 @@ export default function App() {
         <button className="waveButton" onClick={wave}>
           Wave at Me
         </button>
-
+        {mining ? (<div> the transaction is mining
+        </div>): null }
         {currAccount ? null : (
           <button classname="waveButton" onClick={connectWallet}>
           Connect Wallet
