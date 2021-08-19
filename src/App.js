@@ -2,6 +2,7 @@ import * as React from "react";
 import { ethers } from "ethers";
 import './App.css';
 import abi from "./utils/WavePortal.json"
+import { CircleToBlockLoading } from 'react-loadingg';
 
 export default function App() {
 
@@ -69,7 +70,7 @@ export default function App() {
     console.log("Retrieved the total number of waves: ", count.toNumber())
 
     }
-  
+
   return (
     <div className="mainContainer">
 
@@ -85,8 +86,7 @@ export default function App() {
         <button className="waveButton" onClick={wave}>
           Wave at Me
         </button>
-        {mining ? (<div> the transaction is mining
-        </div>): null }
+        {mining ? (<CircleToBlockLoading />): null }
         {currAccount ? null : (
           <button classname="waveButton" onClick={connectWallet}>
           Connect Wallet
