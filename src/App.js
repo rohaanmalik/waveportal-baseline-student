@@ -88,7 +88,8 @@ export default function App() {
     console.log("Mined the transaction ", waveTxn.hash)
     count = await wavePortalContract.getTotalWaves();
     console.log("Retrieved the total number of waves: ", count.toNumber())
-
+    getAllWaves();
+    
     }
 
   return (
