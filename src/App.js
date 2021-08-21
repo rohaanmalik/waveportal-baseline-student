@@ -7,9 +7,10 @@ import { CircleToBlockLoading } from 'react-loadingg';
 export default function App() {
 
   const [currAccount, setCurrAccount] = React.useState("");
-  const contractAddress = "0xAd43b153953d46d9bF4A7A55231c983D968E8EBE";
+  const contractAddress = "0xB799EF1B993aEc257C895D07D570fef16F9bcfd1";
   const contractABI = abi.abi;
   const [mining, setMining] = React.useState(false);
+  const [allWaves, setAllWaves] = React.useState([]);
 
   const checkIfWalletIsConnected = () => {
     const { ethereum } = window;
@@ -27,6 +28,7 @@ export default function App() {
               const account = accounts[0];
               console.log("Found an authorized account:", account)
               setCurrAccount(account);
+              getAllWaves();
             } else {
               console.log("No authorised account found")
             }
@@ -49,6 +51,25 @@ export default function App() {
   React.useEffect(() => {
       checkIfWalletIsConnected();
     }, [])
+
+  const getAllWaves = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner();
+    const wavePortalContract = new ethers.Contract(contractAddress,contractABI, signer);
+    let waves = await wavePortalContract.getAllWaves();
+
+    let wavesCleaned = []
+    waves.forEach(wave => {
+      wavesCleaned.push({
+        address: wave._address,
+        timestamp: new Date(wave.timestamp * 1000),
+        message: wave.message
+      })
+    })
+    console.log(wavesCleaned);
+    setAllWaves(wavesCleaned)
+
+  }
     
   const wave = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -59,13 +80,12 @@ export default function App() {
     console.log("Total number of waves are: ", count.toNumber())
 
     // waiting for the wave transaction
-    const waveTxn = await wavePortalContract.wave()
+    const waveTxn = await wavePortalContract.wave("this is a wave")
     console.log("Mining....", waveTxn.hash)
     setMining(mining => !mining)
     await waveTxn.wait()
     setMining(mining => !mining)
     console.log("Mined the transaction ", waveTxn.hash)
-
     count = await wavePortalContract.getTotalWaves();
     console.log("Retrieved the total number of waves: ", count.toNumber())
 
@@ -86,12 +106,26 @@ export default function App() {
         <button className="waveButton" onClick={wave}>
           Wave at Me
         </button>
+
         {mining ? (<CircleToBlockLoading />): null }
+
         {currAccount ? null : (
           <button classname="waveButton" onClick={connectWallet}>
           Connect Wallet
           </button>
         )}
+
+        {allWaves.map((wave, index) => {
+          return (
+            <div style={{backgroundColor:"OldLace", marginTop: "16px", padding: "8px"}}>
+            <div>Address: {wave.address}</div>
+            <div>Time: {wave.timestamp.toString()}</div>
+            <div>Message:{wave.message}</div>
+            </div>
+          )
+        })
+        }
+
       </div>
     </div>
   );
