@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import './App.css';
 import abi from "./utils/WavePortal.json"
 import { CircleToBlockLoading } from 'react-loadingg';
+import { Textarea } from "@chakra-ui/react"
 
 export default function App() {
 
@@ -11,6 +12,13 @@ export default function App() {
   const contractABI = abi.abi;
   const [mining, setMining] = React.useState(false);
   const [allWaves, setAllWaves] = React.useState([]);
+  const [totalWaves, setTotalWaves] = React.useState(0);
+  let [textValue, setTextValue] = React.useState("")
+
+  let handleInputChange = (e) => {
+    let inputValue = e.target.value
+    setTextValue(inputValue)
+  }
 
   const checkIfWalletIsConnected = () => {
     const { ethereum } = window;
@@ -29,6 +37,8 @@ export default function App() {
               console.log("Found an authorized account:", account)
               setCurrAccount(account);
               getAllWaves();
+              getTotalWaves();
+
             } else {
               console.log("No authorised account found")
             }
@@ -51,6 +61,14 @@ export default function App() {
   React.useEffect(() => {
       checkIfWalletIsConnected();
     }, [])
+
+  const getTotalWaves = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner();
+    const wavePortalContract = new ethers.Contract(contractAddress,contractABI, signer);
+    let totalWaves = await wavePortalContract.getTotalWaves();
+    setTotalWaves(totalWaves.toNumber());
+  }
 
   const getAllWaves = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -80,8 +98,9 @@ export default function App() {
     console.log("Total number of waves are: ", count.toNumber())
 
     // waiting for the wave transaction
-    const waveTxn = await wavePortalContract.wave("this is a wave")
+    const waveTxn = await wavePortalContract.wave(textValue.toString())
     console.log("Mining....", waveTxn.hash)
+    setTextValue("");
     setMining(mining => !mining)
     await waveTxn.wait()
     setMining(mining => !mining)
@@ -89,7 +108,8 @@ export default function App() {
     count = await wavePortalContract.getTotalWaves();
     console.log("Retrieved the total number of waves: ", count.toNumber())
     getAllWaves();
-    
+    getTotalWaves();
+
     }
 
   return (
@@ -108,6 +128,10 @@ export default function App() {
           Wave at Me
         </button>
 
+        <button className="numberOfWaves">
+          Total Number of Waves: {totalWaves}
+        </button>
+
         {mining ? (<CircleToBlockLoading />): null }
 
         {currAccount ? null : (
@@ -115,8 +139,16 @@ export default function App() {
           Connect Wallet
           </button>
         )}
+ 
 
-        {allWaves.map((wave, index) => {
+      <Textarea
+        value={textValue}
+        onChange={handleInputChange}
+        placeholder="Here is a sample placeholder"
+        size="sm"
+      />
+
+      {allWaves.map((wave, index) => {
           return (
             <div style={{backgroundColor:"OldLace", marginTop: "16px", padding: "8px"}}>
             <div>Address: {wave.address}</div>
