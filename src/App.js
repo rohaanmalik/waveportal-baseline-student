@@ -130,6 +130,10 @@ export default function App() {
           Wave at Me 
         </Button>
 
+      <Button className="totalWaves" colorScheme="teal" variant="outline" >
+          Total Waves: {totalWaves}
+        </Button>
+
         {currAccount ? null : (
           <Button classname="connectWallet" colorScheme="teal"  variant="outline" onClick={connectWallet}>
           Connect Wallet
