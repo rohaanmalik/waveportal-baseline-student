@@ -131,7 +131,7 @@ export default function App() {
 
       <Stack direction="column" spacing={5}>
 
-      <Button className="waveButton" colorScheme="teal" variant="outline" onClick={wave} isLoading={mining} loadingText="Mining">
+      <Button className="waveButton" colorScheme="teal" variant="outline" onClick={wave} isLoading={mining} loadingText="Mining the Txn">
           Wave at Me 
         </Button>
 
