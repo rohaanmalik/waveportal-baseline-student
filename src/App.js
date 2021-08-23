@@ -4,6 +4,9 @@ import './App.css';
 import abi from "./utils/WavePortal.json"
 import { CircleToBlockLoading } from 'react-loadingg';
 import { Textarea } from "@chakra-ui/react"
+import { Button, ButtonGroup } from "@chakra-ui/react"
+import { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from './theme';
 
 export default function App() {
 
@@ -113,6 +116,8 @@ export default function App() {
     }
 
   return (
+    <ThemeProvider theme={darkTheme}>
+    <>
     <div className="mainContainer">
 
       <div className="dataContainer">
@@ -128,9 +133,9 @@ export default function App() {
           Wave at Me
         </button>
 
-        <button className="numberOfWaves">
-          Total Number of Waves: {totalWaves}
-        </button>
+        <Button colorScheme="teal" variant="outline" spacing="1rem">
+          Button
+        </Button>
 
         {mining ? (<CircleToBlockLoading />): null }
 
@@ -159,7 +164,9 @@ export default function App() {
         })
         }
 
-      </div>
+      </div>   
     </div>
+    </>
+    </ThemeProvider>
   );
 }
