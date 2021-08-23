@@ -1,10 +1,8 @@
-import * as React from "react";
+import { Box, Button, Stack, Textarea } from "@chakra-ui/react";
 import { ethers } from "ethers";
+import * as React from "react";
 import './App.css';
-import abi from "./utils/WavePortal.json"
-import { Box, Stack, Textarea } from "@chakra-ui/react"
-import { Button, ButtonGroup } from "@chakra-ui/react"
-import { ThemeProvider } from 'styled-components';
+import abi from "./utils/WavePortal.json";
 
 export default function App() {
 
@@ -67,8 +65,8 @@ export default function App() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner();
     const wavePortalContract = new ethers.Contract(contractAddress,contractABI, signer);
-    let totalWaves = await wavePortalContract.getTotalWaves();
-    setTotalWaves(totalWaves.toNumber());
+    let _totalWaves = await wavePortalContract.getTotalWaves();
+    setTotalWaves(_totalWaves.toNumber());
   }
 
   const getAllWaves = async () => {
