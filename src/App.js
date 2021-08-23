@@ -144,11 +144,10 @@ export default function App() {
         placeholder="Here is a sample placeholder"
         size="sm"
       />
-      </Stack>
-    
+
       {allWaves.map((wave, index) => {
           return (
-            <div style={{backgroundColor:"OldLace", marginTop: "16px", padding: "8px"}}>
+            <div style={{backgroundColor:"black", marginTop: "16px", padding: "8px"}}>
             <div>Address: {wave.address}</div>
             <div>Time: {wave.timestamp.toString()}</div>
             <div>Message:{wave.message}</div>
@@ -156,6 +155,8 @@ export default function App() {
           )
         })
         }
+      </Stack>
+    
 
       </div>   
     </div>
