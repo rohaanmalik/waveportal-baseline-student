@@ -2,8 +2,7 @@ import * as React from "react";
 import { ethers } from "ethers";
 import './App.css';
 import abi from "./utils/WavePortal.json"
-import { CircleToBlockLoading } from 'react-loadingg';
-import { Textarea } from "@chakra-ui/react"
+import { Stack, Textarea } from "@chakra-ui/react"
 import { Button, ButtonGroup } from "@chakra-ui/react"
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './theme';
@@ -129,22 +128,18 @@ export default function App() {
         I am Rohaan Malik. Connect your Ethereum wallet and wave at me!
         </div>
 
-        <button className="waveButton" onClick={wave}>
-          Wave at Me
-        </button>
 
-        <Button colorScheme="teal" variant="outline" spacing="1rem">
-          Button
+      <Stack direction="column" spacing={5}>
+
+      <Button className="waveButton" colorScheme="teal" variant="outline" onClick={wave} isLoading={mining} loadingText="Mining">
+          Wave at Me 
         </Button>
 
-        {mining ? (<CircleToBlockLoading />): null }
-
         {currAccount ? null : (
-          <button classname="waveButton" onClick={connectWallet}>
+          <Button classname="connectWallet" colorScheme="teal"  variant="outline" onClick={connectWallet}>
           Connect Wallet
-          </button>
+          </Button>
         )}
- 
 
       <Textarea
         value={textValue}
@@ -152,7 +147,8 @@ export default function App() {
         placeholder="Here is a sample placeholder"
         size="sm"
       />
-
+      </Stack>
+    
       {allWaves.map((wave, index) => {
           return (
             <div style={{backgroundColor:"OldLace", marginTop: "16px", padding: "8px"}}>
