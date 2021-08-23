@@ -2,7 +2,7 @@ import * as React from "react";
 import { ethers } from "ethers";
 import './App.css';
 import abi from "./utils/WavePortal.json"
-import { Stack, Textarea } from "@chakra-ui/react"
+import { Box, Stack, Textarea } from "@chakra-ui/react"
 import { Button, ButtonGroup } from "@chakra-ui/react"
 import { ThemeProvider } from 'styled-components';
 
@@ -147,11 +147,11 @@ export default function App() {
 
       {allWaves.map((wave, index) => {
           return (
-            <div style={{backgroundColor:"black", marginTop: "16px", padding: "8px"}}>
+            <Box borderWidth="1px" borderRadius="lg" p="4">
             <div>Address: {wave.address}</div>
             <div>Time: {wave.timestamp.toString()}</div>
             <div>Message:{wave.message}</div>
-            </div>
+            </Box>
           )
         })
         }
