@@ -5,7 +5,6 @@ import abi from "./utils/WavePortal.json"
 import { Stack, Textarea } from "@chakra-ui/react"
 import { Button, ButtonGroup } from "@chakra-ui/react"
 import { ThemeProvider } from 'styled-components';
-import { lightTheme, darkTheme } from './theme';
 
 export default function App() {
 
@@ -115,8 +114,6 @@ export default function App() {
     }
 
   return (
-    <ThemeProvider theme={darkTheme}>
-    <>
     <div className="mainContainer">
 
       <div className="dataContainer">
@@ -162,7 +159,5 @@ export default function App() {
 
       </div>   
     </div>
-    </>
-    </ThemeProvider>
   );
 }
